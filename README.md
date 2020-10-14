@@ -1,0 +1,1 @@
+This repo is for practicing room database by making a note app.
