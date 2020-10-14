@@ -1,6 +1,7 @@
 package com.codingwithmitch.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.util.Log;
 import com.codingwithmitch.notes.adapters.NotesRecyclerAdapter;
 import com.codingwithmitch.notes.models.Note;
 import com.codingwithmitch.notes.utils.VerticalSpacingItemDecorator;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,10 @@ public class NotesListActivity extends AppCompatActivity {
 
         initRecyclerView();
         insertFakeNotes();
+        CollapsingToolbarLayout collapse = findViewById(R.id.collapseToolbar);
+
+        setSupportActionBar((Toolbar)findViewById(R.id.note_toolbar));
+        collapse.setTitle("Notes");
     }
 
     private void insertFakeNotes() {
