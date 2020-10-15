@@ -1,7 +1,9 @@
 package com.codingwithmitch.notes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,11 +28,10 @@ public class NotesListActivity extends AppCompatActivity implements
 
     // Ui components
     private RecyclerView mRecyclerView;
-    private NotesRecyclerAdapter mNotesRecyclerAdapter;
 
     // vars
     private ArrayList<Note> mNotes = new ArrayList<>();
-    private NotesRecyclerAdapter mNotesRecyclerAdpater;
+    private NotesRecyclerAdapter mNotesRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class NotesListActivity extends AppCompatActivity implements
             note.setTimestamp("Dec 14 2020");
             mNotes.add(note);
         }
-        mNotesRecyclerAdpater.notifyDataSetChanged();
+        mNotesRecyclerAdapter.notifyDataSetChanged();
     }
 
     private void initRecyclerView(){
@@ -64,8 +65,9 @@ public class NotesListActivity extends AppCompatActivity implements
         mRecyclerView.setLayoutManager(layoutManager);
         VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(10);
         mRecyclerView.addItemDecoration(itemDecorator);
-        mNotesRecyclerAdpater = new NotesRecyclerAdapter(mNotes, this);
-        mRecyclerView.setAdapter(mNotesRecyclerAdpater);
+        mNotesRecyclerAdapter = new NotesRecyclerAdapter(mNotes, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
+        mRecyclerView.setAdapter(mNotesRecyclerAdapter);
     }
 
     @Override
@@ -86,4 +88,21 @@ public class NotesListActivity extends AppCompatActivity implements
             }
         }
     }
+
+    private void deleteNote(Note note){
+        mNotes.remove(note);
+        mNotesRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    private ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            deleteNote(mNotes.get(viewHolder.getAdapterPosition()));
+        }
+    };
 }
