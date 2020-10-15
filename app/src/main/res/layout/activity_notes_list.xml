@@ -11,19 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapseToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFB900"
-            app:layout_scrollFlags="scroll|enterAlways" >
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/note_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                android:layout_height="?attr/actionBarSize"
+                android:background="#FFB900"
+                app:layout_scrollFlags="scroll|enterAlways" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

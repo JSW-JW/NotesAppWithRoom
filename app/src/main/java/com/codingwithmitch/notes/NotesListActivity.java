@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,7 +16,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 
-public class NotesListActivity extends AppCompatActivity {
+public class NotesListActivity extends AppCompatActivity implements NotesRecyclerAdapter.OnNoteListener {
 
     private static final String TAG = "NotesListActivity";
 
@@ -35,10 +36,9 @@ public class NotesListActivity extends AppCompatActivity {
 
         initRecyclerView();
         insertFakeNotes();
-        CollapsingToolbarLayout collapse = findViewById(R.id.collapseToolbar);
 
         setSupportActionBar((Toolbar)findViewById(R.id.note_toolbar));
-        collapse.setTitle("Notes");
+        setTitle("Notes");
     }
 
     private void insertFakeNotes() {
@@ -58,7 +58,12 @@ public class NotesListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(10);
         mRecyclerView.addItemDecoration(itemDecorator);
-        mNotesRecyclerAdpater = new NotesRecyclerAdapter(mNotes);
+        mNotesRecyclerAdpater = new NotesRecyclerAdapter(mNotes, this);
         mRecyclerView.setAdapter(mNotesRecyclerAdpater);
+    }
+
+    @Override
+    public void onNoteClick(int position) {
+        Log.d(TAG, "onNoteClick: clicked." + position);
     }
 }
