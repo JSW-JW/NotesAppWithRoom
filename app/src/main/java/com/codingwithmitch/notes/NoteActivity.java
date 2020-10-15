@@ -17,7 +17,8 @@ import com.codingwithmitch.notes.models.Note;
 public class NoteActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener,
-        GestureDetector.OnDoubleTapListener {
+        GestureDetector.OnDoubleTapListener,
+        View.OnClickListener {
 
     private static final String TAG = "SomeActivity";
     private static final int EDIT_MODE_ENABLED = 1;
@@ -65,6 +66,8 @@ public class NoteActivity extends AppCompatActivity implements
     private void setListener() {
         mGestureDetector = new GestureDetector(this, this);
         mLinedEditText.setOnTouchListener(this);
+        mViewTitle.setOnClickListener(this);
+        mCheck.setOnClickListener(this);
     }
 
     private boolean getIncomingIntent() {
@@ -111,11 +114,13 @@ public class NoteActivity extends AppCompatActivity implements
         mEditTitle.setText("Note Title");
     }
 
+    // onTouchListener method
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         return mGestureDetector.onTouchEvent(motionEvent);
     }
 
+    // onDoubleTapListener method
     @Override
     public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
         return false;
@@ -133,6 +138,7 @@ public class NoteActivity extends AppCompatActivity implements
         return false;
     }
 
+    // onGestureListener method
     @Override
     public boolean onDown(MotionEvent motionEvent) {
         return false;
@@ -161,5 +167,33 @@ public class NoteActivity extends AppCompatActivity implements
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         return false;
+    }
+
+    // onClick method
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+
+            case R.id.toolbar_check:{
+                disableEditMode();
+                break;
+            }
+            case R.id.note_text_title:{
+                enableEditMode();
+                mEditTitle.requestFocus(); // make cursor put into the editText title.
+                mEditTitle.setSelection(mEditTitle.length()); // make cursor at the end of the title string.
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mMode == EDIT_MODE_ENABLED) {
+            onClick(mCheck);
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }
