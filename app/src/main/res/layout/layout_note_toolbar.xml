@@ -37,7 +37,7 @@
             android:layout_height="40dp"
             android:src="@drawable/ic_baseline_check_24"
             android:background="?attr/selectableItemBackground"
-            android:id="@+id/check_mark"
+            android:id="@+id/toolbar_check"
             android:layout_centerInParent="true" />
 
     </RelativeLayout>
