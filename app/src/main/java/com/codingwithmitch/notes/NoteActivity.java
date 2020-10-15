@@ -71,6 +71,7 @@ public class NoteActivity extends AppCompatActivity implements
         mLinedEditText.setOnTouchListener(this);
         mViewTitle.setOnClickListener(this);
         mCheck.setOnClickListener(this);
+        mBackArrow.setOnClickListener(this);
     }
 
     private boolean getIncomingIntent() {
@@ -216,6 +217,10 @@ public class NoteActivity extends AppCompatActivity implements
                 enableEditMode();
                 mEditTitle.requestFocus(); // make cursor put into the editText title.
                 mEditTitle.setSelection(mEditTitle.length()); // make cursor at the end of the title string.
+                break;
+            }
+            case R.id.toolbar_back_arrow:{
+                finish();
                 break;
             }
         }
