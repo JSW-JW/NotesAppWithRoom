@@ -17,15 +17,12 @@ public interface NoteDao {
     @Insert
     long[] insertNotes(Note... notes);
 
-    @Query("SELECT * FROM notes") // select all of the rows from notes table
+    @Query("SELECT * FROM notes")
     LiveData<List<Note>> getNotes();
-
-    @Query("SELECT * FROM notes WHERE title LIKE :title")
-    LiveData<List<Note>> getNoteWithCustomQuery(String title);
 
     @Delete
     int delete(Note... notes);
 
     @Update
-    int update(Note... notes);
+    int updateNotes(Note... notes);
 }
