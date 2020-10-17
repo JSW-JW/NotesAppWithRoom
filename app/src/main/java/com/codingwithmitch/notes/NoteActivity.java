@@ -42,6 +42,7 @@ public class NoteActivity extends AppCompatActivity implements
 
     // vars
     private boolean mIsNewNote;
+    private boolean mIsNewNoteSaved;
     private GestureDetector mGestureDetector;
     private int mMode;
     private NoteRepository mNoteRepository;
@@ -87,7 +88,12 @@ public class NoteActivity extends AppCompatActivity implements
     private boolean getIncomingIntent() {
         if (getIntent().hasExtra("selected_note")) {
             mInitialNote = getIntent().getParcelableExtra("selected_note");
-            mFinalNote = getIntent().getParcelableExtra("selected_note");
+
+            mFinalNote = new Note();
+            mFinalNote.setTitle(mInitialNote.getTitle());
+            mFinalNote.setContent(mInitialNote.getContent());
+            mFinalNote.setTimestamp(mInitialNote.getTimestamp());
+            mFinalNote.setId(mInitialNote.getId());
 
             mMode = EDIT_MODE_DISABLED;
             mIsNewNote = false;
@@ -103,8 +109,13 @@ public class NoteActivity extends AppCompatActivity implements
             saveNewNotes();
         }
         else {
-
+            Log.d(TAG, "disable: update");
+            updateNote();
         }
+    }
+
+    private void updateNote(){
+        mNoteRepository.updateNote(mFinalNote);
     }
 
     private void saveNewNotes(){
@@ -128,7 +139,7 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     private void enableEditMode() {
-        mBackArrow.setVisibility(View.GONE);
+        mBackArrowContainer.setVisibility(View.GONE);
         mCheckContainer.setVisibility(View.VISIBLE);
 
         mViewTitle.setVisibility(View.GONE);
@@ -141,6 +152,26 @@ public class NoteActivity extends AppCompatActivity implements
 
     private void disableEditMode() {
 
+        String tempContent = mLinedEditText.getText().toString();
+        String tempTitle = mEditTitle.getText().toString();
+        tempContent = tempContent.replace("\n", "");
+        tempContent = tempContent.replace(" ", "");
+
+        if(tempContent.length() > 0 || tempTitle.length() > 0) {
+            Log.d(TAG, "disableEditMode: first if");
+            mFinalNote.setTitle(mEditTitle.getText().toString());
+            mFinalNote.setContent(mLinedEditText.getText().toString());
+            String timestamp = Utility.getCurrentTimestamp();
+            mFinalNote.setTimestamp(timestamp);
+
+            if(!mFinalNote.getContent().equals(mInitialNote.getContent())
+            || !mFinalNote.getTitle().equals(mInitialNote.getTitle())) {
+                Log.d(TAG, "disableEditMode: title: " + mFinalNote.getTitle() + " // " + mInitialNote.getTitle());
+                Log.d(TAG, "disableEditMode: content: " + mFinalNote.getContent() + " // " + mInitialNote.getContent());
+                saveChanges();
+            }
+        }
+
         mBackArrow.setVisibility(View.VISIBLE);
         mCheckContainer.setVisibility(View.GONE);
 
@@ -151,21 +182,7 @@ public class NoteActivity extends AppCompatActivity implements
 
         disableContentInteraction();
 
-        String tempContent = mLinedEditText.getText().toString();
-        String tempTitle = mEditTitle.getText().toString();
-        tempContent = tempContent.replace("\n", "");
-        tempContent = tempContent.replace(" ", "");
-        if(tempContent.length() > 0 || tempTitle.length() > 0) {
-            mFinalNote.setTitle(mEditTitle.getText().toString());
-            mFinalNote.setContent(mLinedEditText.getText().toString());
-            String timestamp = Utility.getCurrentTimestamp();
-            mFinalNote.setTimestamp(timestamp);
-
-            if(!mFinalNote.getContent().equals(mInitialNote.getContent())
-            || !mFinalNote.getTitle().equals(mInitialNote.getTitle())) {
-                saveChanges();
-            }
-        }
+        finish();
 
     }
 
@@ -185,13 +202,15 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     private void setNewNoteProperties() {
-        mViewTitle.setText("Note Title");
-        mEditTitle.setText("Note Title");
-
         mInitialNote = new Note();
         mFinalNote = new Note();
-        mInitialNote.setTitle("Note Title");
-        mFinalNote.setTitle("Note Title");
+
+        mInitialNote.setContent("");
+        mFinalNote.setContent("");
+
+        mInitialNote.setTitle("");
+        mFinalNote.setTitle("");
+
     }
 
     // onTouchListener method

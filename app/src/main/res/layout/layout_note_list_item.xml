@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="75"
         android:id="@+id/note_title"
-        android:textSize="23sp"
+        android:textSize="28sp"
         android:lines="1"
         android:text="This is my title"
         android:padding="10dp"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="20"
         android:id="@+id/note_timestamp"
-        android:textSize="17sp"
+        android:textSize="23sp"
         android:text="Dec 2020"
         android:padding="10dp"
         android:textColor="@android:color/black"/>

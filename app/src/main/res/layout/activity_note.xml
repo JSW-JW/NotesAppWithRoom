@@ -15,7 +15,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="70dp"
             android:background="#FFB900">
 
             <include layout="@layout/layout_note_toolbar" />
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/note_text"
-        android:textSize="23sp"
+        android:textSize="28sp"
         android:textColor="@color/black"
         android:padding="5dp"
         android:gravity="top"

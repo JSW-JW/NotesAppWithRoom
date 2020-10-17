@@ -51,7 +51,8 @@ public class NotesListActivity extends AppCompatActivity implements
 //        insertFakeNotes();
 
         setSupportActionBar((Toolbar)findViewById(R.id.note_toolbar));
-        setTitle("Notes");
+        setTitle("노트 목록");
+
     }
 
     private void retrieveNotes(){
@@ -113,6 +114,8 @@ public class NotesListActivity extends AppCompatActivity implements
     private void deleteNote(Note note){
         mNotes.remove(note);
         mNotesRecyclerAdapter.notifyDataSetChanged();
+
+        mNotesRepository.deleteNote(note);
     }
 
     private ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {

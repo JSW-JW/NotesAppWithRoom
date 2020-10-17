@@ -44,27 +44,31 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_weight="85"
-        android:text="title of note"
+        android:text=""
+        android:hint="제목을 입력하세요"
         android:id="@+id/note_text_title"
         android:textColor="@color/black"
         android:layout_marginStart="15dp"
-        android:textSize="23sp"
+        android:textSize="28sp"
+        android:paddingTop="6dp"
         android:visibility="visible"/>
 
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="85"
-        android:text="title of note"
+        android:text=""
+        android:hint="제목을 입력하세요"
         android:id="@+id/note_edit_title"
         android:textColor="@color/black"
         android:layout_marginStart="15dp"
-        android:textSize="23sp"
+        android:textSize="28sp"
         android:visibility="gone"
         android:background="@color/white"
         android:padding="2dp"
+        android:layout_marginRight="200dp"
         />
 
 
