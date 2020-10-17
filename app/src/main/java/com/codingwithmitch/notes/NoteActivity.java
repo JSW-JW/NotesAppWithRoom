@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.codingwithmitch.notes.models.Note;
 import com.codingwithmitch.notes.persistence.NoteRepository;
+import com.codingwithmitch.notes.utils.Utility;
 
 public class NoteActivity extends AppCompatActivity implements
         View.OnTouchListener,
@@ -157,7 +158,7 @@ public class NoteActivity extends AppCompatActivity implements
         if(tempContent.length() > 0 || tempTitle.length() > 0) {
             mFinalNote.setTitle(mEditTitle.getText().toString());
             mFinalNote.setContent(mLinedEditText.getText().toString());
-            String timestamp = "Jan 2020";
+            String timestamp = Utility.getCurrentTimestamp();
             mFinalNote.setTimestamp(timestamp);
 
             if(!mFinalNote.getContent().equals(mInitialNote.getContent())
