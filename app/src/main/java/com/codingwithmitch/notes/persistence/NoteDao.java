@@ -20,6 +20,9 @@ public interface NoteDao {
     @Query("SELECT * FROM notes")
     LiveData<List<Note>> getNotes();
 
+    @Query("SELECT * FROM notes WHERE title LIKE :title")
+    LiveData<List<Note>> getNotesWithCustomQuery(String title);
+
     @Delete
     int delete(Note... notes);
 
