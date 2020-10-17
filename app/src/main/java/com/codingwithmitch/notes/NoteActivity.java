@@ -38,10 +38,11 @@ public class NoteActivity extends AppCompatActivity implements
 
     // vars
     private boolean mIsNewNote;
-    private Note mNoteInitial;
     private GestureDetector mGestureDetector;
     private int mMode;
     private NoteRepository mNoteRepository;
+    private Note mInitialNote;
+    private Note mFinalNote;
 
 
     @Override
@@ -80,7 +81,8 @@ public class NoteActivity extends AppCompatActivity implements
 
     private boolean getIncomingIntent() {
         if (getIntent().hasExtra("selected_note")) {
-            mNoteInitial = getIntent().getParcelableExtra("selected_note");
+            mInitialNote = getIntent().getParcelableExtra("selected_note");
+            mFinalNote = getIntent().getParcelableExtra("selected_note");
 
             mMode = EDIT_MODE_DISABLED;
             mIsNewNote = false;
@@ -93,7 +95,7 @@ public class NoteActivity extends AppCompatActivity implements
 
     private void saveChanges(){
         if(mIsNewNote) {
-            mNoteRepository.insertNoteTask(mNoteInitial);
+            saveNewNotes();
         }
         else {
 
@@ -101,7 +103,7 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     private void saveNewNotes(){
-        mNoteRepository.insertNoteTask(mNoteInitial);
+        mNoteRepository.insertNoteTask(mFinalNote);
     }
 
     private void disableContentInteraction(){
@@ -144,7 +146,22 @@ public class NoteActivity extends AppCompatActivity implements
 
         disableContentInteraction();
 
-        saveChanges();
+        String tempContent = mLinedEditText.getText().toString();
+        String tempTitle = mEditTitle.getText().toString();
+        tempContent = tempContent.replace("\n", "");
+        tempContent = tempContent.replace(" ", "");
+        if(tempContent.length() > 0 || tempTitle.length() > 0) {
+            mFinalNote.setTitle(mEditTitle.getText().toString());
+            mFinalNote.setContent(mLinedEditText.getText().toString());
+            String timestamp = "Jan 2020";
+            mFinalNote.setTimestamp(timestamp);
+
+            if(!mFinalNote.getContent().equals(mInitialNote.getContent())
+            || !mFinalNote.getTitle().equals(mInitialNote.getTitle())) {
+                saveChanges();
+            }
+        }
+
     }
 
     private void hideSoftKeyboard(){
@@ -157,14 +174,19 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     private void setNoteProperties() {
-        mViewTitle.setText(mNoteInitial.getTitle());
-        mEditTitle.setText(mNoteInitial.getTitle());
-        mLinedEditText.setText(mNoteInitial.getContent());
+        mViewTitle.setText(mInitialNote.getTitle());
+        mEditTitle.setText(mInitialNote.getTitle());
+        mLinedEditText.setText(mInitialNote.getContent());
     }
 
     private void setNewNoteProperties() {
         mViewTitle.setText("Note Title");
         mEditTitle.setText("Note Title");
+
+        mInitialNote = new Note();
+        mFinalNote = new Note();
+        mInitialNote.setTitle("Note Title");
+        mFinalNote.setTitle("Note Title");
     }
 
     // onTouchListener method
